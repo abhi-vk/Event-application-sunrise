@@ -1,6 +1,3 @@
-Apologies for the confusion! Here's the corrected README file for your MERN Event CRUD app using Node.js, Express, and MongoDB:
-
----
 
 # MERN Event CRUD Application
 
