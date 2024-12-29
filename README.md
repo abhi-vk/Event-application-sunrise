@@ -1,14 +1,17 @@
+Apologies for the confusion! Here's the corrected README file for your MERN Event CRUD app using Node.js, Express, and MongoDB:
+
+---
 
 # MERN Event CRUD Application
 
-This is a full-stack CRUD application built with the **MERN** stack, where users can log in, create, update, and delete events. The application stores user-generated data in a PostgreSQL database and provides a dynamic, interactive user interface.
+This is a full-stack CRUD application built with the **MERN** stack, where users can log in, create, update, and delete events. The application stores user-generated data in a MongoDB database and provides a dynamic, interactive user interface.
 
 ## Features
 
 - **Authentication**: Secure login and registration for users.
 - **Event Management**: Users can create, view, update, and delete events (only when logged in).
 - **Responsive UI**: The app is designed using Bootstrap for a clean and responsive user interface.
-- **Database Integration**: Event data is stored in a PostgreSQL database.
+- **Database Integration**: Event data is stored in MongoDB.
 
 ## Tech Stack
 
@@ -17,8 +20,9 @@ This is a full-stack CRUD application built with the **MERN** stack, where users
   - Vite
   - Bootstrap
 - **Backend**:
-  - Flask
-  - PostgreSQL
+  - Node.js
+  - Express.js
+  - MongoDB
 - **Other**:
   - JWT for Authentication
   - Axios for API calls
@@ -29,9 +33,8 @@ This is a full-stack CRUD application built with the **MERN** stack, where users
 
 Make sure you have the following installed on your machine:
 
-- **Node.js** (for the frontend)
-- **Python 3.x** (for the backend)
-- **PostgreSQL** (for the database)
+- **Node.js** (for both frontend and backend)
+- **MongoDB** (for the database)
 
 ### Frontend
 
@@ -64,41 +67,30 @@ Make sure you have the following installed on your machine:
    cd backend
    ```
 
-2. Create a virtual environment (optional but recommended):
+2. Install the backend dependencies:
 
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   npm install
    ```
 
-3. Install the backend dependencies:
+3. Set up MongoDB:
+   - If you're using MongoDB locally, ensure your MongoDB server is running.
+   - Alternatively, you can use **MongoDB Atlas** and update the connection URL in the `.env` file.
+
+4. Start the backend server:
 
    ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Set up PostgreSQL:
-   - Create a new database (e.g., `event_db`) in PostgreSQL.
-   - Update the `config.py` file with your database connection details.
-
-5. Start the backend server:
-
-   ```bash
-   python app.py
+   nodemon index.js
    ```
 
    The backend API will be running on `http://localhost:5000`.
-
-### Database Setup
-
-The application uses PostgreSQL to store user and event data. Ensure your PostgreSQL database is properly set up and that the connection is configured in the backend.
 
 ### Environment Variables
 
 Add your environment variables in a `.env` file in the backend directory. These variables are used for configuration:
 
 ```
-DATABASE_URL=postgres://username:password@localhost:5432/event_db
+MONGO_URI=mongodb://localhost:27017/eventDB
 JWT_SECRET=your_jwt_secret_key
 ```
 
@@ -120,11 +112,11 @@ JWT_SECRET=your_jwt_secret_key
 ```
 /mern-event-crud-app
 │
-├── /backend                # Flask backend API
-│   ├── /models             # Database models
+├── /backend                # Node.js and Express backend API
+│   ├── /models             # MongoDB models
 │   ├── /routes             # API routes
-│   ├── app.py              # Main entry point for the backend
-│   └── config.py           # Configuration settings (database, JWT, etc.)
+│   ├── server.js           # Main entry point for the backend
+│   └── .env                # Environment variables (database URI, JWT secret, etc.)
 │
 ├── /frontend               # React frontend
 │   ├── /src
@@ -134,7 +126,7 @@ JWT_SECRET=your_jwt_secret_key
 │   └── index.html          # HTML template
 │
 ├── package.json            # Frontend dependencies and scripts
-├── requirements.txt        # Backend dependencies
+├── backend/package.json    # Backend dependencies and scripts
 └── README.md               # This file
 ```
 
