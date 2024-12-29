@@ -3,7 +3,6 @@ import { handleApiRes, handleApiErr } from '../auth/apiUtils';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-// User Login API
 export const userLoginApi = async (userData, navigate) => {
     try {
         const response = await fetch(`${baseURL}/user/login`, {
@@ -16,24 +15,22 @@ export const userLoginApi = async (userData, navigate) => {
 
         if (response.status === 200) {
             const data = await response.json();
-            const { status, token } = data;  // Assuming 'data' contains { status, token }
+            const { status, token } = data;
 
             if (status === 'success') {
-                // Save token in localStorage
                 localStorage.setItem('authToken', token);
-                return token;  // Return token for further use if needed
+                return token;
             } else {
-                handleApiRes(data);  // Handles error response if status isn't 'success'
+                handleApiRes(data);
             }
         } else {
             throw new Error('Login failed');
         }
     } catch (error) {
-        handleApiErr(error, navigate);  // Handles errors from the API call
+        handleApiErr(error, navigate);
     }
 };
 
-// User Register API
 export const userRegisterApi = async (userData, navigate) => {
     try {
         const response = await fetch(`${baseURL}/user/register`, {
@@ -49,26 +46,25 @@ export const userRegisterApi = async (userData, navigate) => {
             const { status, msg } = data;
 
             if (status === 'success') {
-                toast.success(msg);  // Display success message
+                toast.success(msg);
                 return true;
             } else {
-                handleApiRes(data);  // Handles error response
+                handleApiRes(data);
             }
         } else {
             throw new Error('Registration failed');
         }
     } catch (error) {
-        handleApiErr(error, navigate);  // Handles errors from the API call
+        handleApiErr(error, navigate);
     }
 };
 
-// User Update API
 export const userUpdateApi = async (userData, navigate) => {
-    const token = localStorage.getItem('authToken');  // Get token from localStorage
+    const token = localStorage.getItem('authToken');
 
     if (!token) {
         toast.error('Authorization token is missing');
-        navigate('/login');  // Redirect to login if token is not available
+        navigate('/login');
         return;
     }
 
@@ -77,7 +73,7 @@ export const userUpdateApi = async (userData, navigate) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,  // Send token in the Authorization header
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(userData),
         });
@@ -87,25 +83,24 @@ export const userUpdateApi = async (userData, navigate) => {
             const { status, msg } = data;
 
             if (status === 'success') {
-                toast.success(msg);  // Display success message
+                toast.success(msg);
                 return true;
             } else {
-                handleApiRes(data);  // Handles error response
+                handleApiRes(data);
             }
         } else {
             throw new Error('Update failed');
         }
     } catch (error) {
-        handleApiErr(error, navigate);  // Handles errors from the API call
+        handleApiErr(error, navigate);
     }
 };
 
-// User Dashboard API
 export const userDashboardApi = async (navigate) => {
-    const token = localStorage.getItem('authToken');  // Get token from localStorage
+    const token = localStorage.getItem('authToken');
 
     if (!token) {
-        navigate('/login');  // Redirect if no token found
+        navigate('/login');
         return;
     }
 
@@ -114,25 +109,24 @@ export const userDashboardApi = async (navigate) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,  // Send token in the Authorization header
+                Authorization: `Bearer ${token}`,
             },
         });
 
         if (response.status === 200) {
             const data = await response.json();
-            const { status, user } = data;  // Assuming 'data' contains { status, user }
+            const { status, data: userData } = data;
 
-            // Only handle errors if the status is not 'success'
-            if (status === 'success' && user) {
-                return user;  // Return the user data
+            if (status === 'success' && userData) {
+                return userData;
             } else {
                 console.error('API Response Error:', data);
-                handleApiRes(data);  // Handles error response
+                handleApiRes(data);
             }
         } else {
             throw new Error('Failed to fetch dashboard data');
         }
     } catch (error) {
-        handleApiErr(error, navigate);  // Handles errors from the API call
+        handleApiErr(error, navigate);
     }
 };

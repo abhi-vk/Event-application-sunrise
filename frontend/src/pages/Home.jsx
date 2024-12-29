@@ -5,13 +5,12 @@ import { toast } from 'react-toastify';
 import Navbar from '../components/Navbar';
 
 const Home = () => {
-    const [events, setEvents] = useState([]); // Holds the list of events
-    const [showModal, setShowModal] = useState(false); // Controls the modal visibility
-    const [eventForm, setEventForm] = useState({ eventName: '', location: '' }); // Form data
-    const [editEventId, setEditEventId] = useState(null); // Holds the ID of the event being edited
+    const [events, setEvents] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [eventForm, setEventForm] = useState({ eventName: '', location: '' });
+    const [editEventId, setEditEventId] = useState(null);
     const navigate = useNavigate();
 
-    // Fetch user events on component mount
     useEffect(() => {
         const fetchEvents = async () => {
             const data = await getUserEventsApi(navigate);
@@ -20,17 +19,14 @@ const Home = () => {
         fetchEvents();
     }, [navigate]);
 
-    // Handle Create or Update Event
     const handleSaveEvent = async () => {
         if (editEventId) {
-            // Update event
             const updatedEvent = await updateEventApi(editEventId, eventForm, navigate);
             if (updatedEvent) {
                 setEvents(events.map((event) => (event._id === editEventId ? updatedEvent : event)));
                 toast.success('Event updated successfully!');
             }
         } else {
-            // Create new event
             const newEvent = await createEventApi(eventForm, navigate);
             if (newEvent) {
                 setEvents([...events, newEvent]);
@@ -38,20 +34,17 @@ const Home = () => {
             }
         }
 
-        // Reset the form and close the modal
         setEventForm({ eventName: '', location: '' });
         setEditEventId(null);
         setShowModal(false);
     };
 
-    // Handle Edit Event
     const handleEditEvent = (event) => {
         setEventForm({ eventName: event.eventName, location: event.location });
         setEditEventId(event._id);
         setShowModal(true);
     };
 
-    // Handle Delete Event
     const handleDeleteEvent = async (eventId) => {
         await deleteEventApi(eventId, navigate);
         setEvents(events.filter((event) => event._id !== eventId));
@@ -61,7 +54,6 @@ const Home = () => {
         <>
         <Navbar/>
         <div className="container mt-5">
-            {/* Create Event Button */}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2>Your Events</h2>
                 <button className="btn btn-primary" onClick={() => setShowModal(true)}>
@@ -69,7 +61,6 @@ const Home = () => {
                 </button>
             </div>
 
-            {/* Event Cards */}
             <div className="row">
                 {events.map((event) => (
                     <div className="col-md-4 mb-4" key={event._id}>
@@ -97,7 +88,6 @@ const Home = () => {
                 ))}
             </div>
 
-            {/* Modal for Create/Edit Event */}
             {showModal && (
                 <div
                     className="modal show d-block"

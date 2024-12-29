@@ -3,18 +3,18 @@ import { toast } from 'react-toastify';
 export const handleApiRes = (response) => {
     const { status, msg } = response;
     
-    // Skip error handling if the status is 'success'
+ 
     if (status === 'success') {
-        return; // Don't do anything for successful response
+        return; 
     }
 
     // JWT Error handling
     if (status === 'jwtError') {
         toast.error('Session expired. Please log in again.');
-        window.location.href = '/login';  // Optionally redirect to login
+        window.location.href = '/login'; 
         throw new Error('JWT Error');
     } else {
-        // Show error message
+        
         if (msg) {
             toast.error(msg);
         } else {
